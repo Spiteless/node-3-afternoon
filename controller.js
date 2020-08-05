@@ -9,7 +9,7 @@ module.exports = {
             res.status(200).send(products)
         }).catch(err => {
             console.log(err);
-            res.sendStatus(500).send({errorMessage: errorMsg});
+            res.send(500).send({errorMessage: errorMsg});
         })
     },
     getOne: (req, res) => {
@@ -27,7 +27,7 @@ module.exports = {
         db.read_products().then ( products =>{
             res.status(200).send(products)
         }).catch( err => {
-            res.sendStatus(500).send({errorMessage: errorMsg});
+            res.status(500).send({errorMessage: errorMsg});
         })
     },
     updateDescription: (req, res) => {
@@ -38,8 +38,18 @@ module.exports = {
             res.status(200).send(products)
         }).catch(err => {
             console.log(err);
-            res.sendStatus(500).send({errorMessage: errorMsg});
+            res.send(500).send({errorMessage: errorMsg});
         })
     },
-    delete: {}
+    delete: (req, res) => {
+        const db = req.app.get("db");
+        const {product_id} = req.body
+        db.delete_product([product_id, description])
+        .then(product => {
+            res.status(200).send(products)
+        }).catch(err => {
+            console.log(err);
+            res.send(500).send({errorMessage: errorMsg});
+        })
+    },
 }
